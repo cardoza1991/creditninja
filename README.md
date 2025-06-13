@@ -8,6 +8,9 @@ Lean & mean Golang credit‑repair automation platform.
 git clone <repo-url>
 cd creditninja
 cp .env.example .env   # edit secrets
+# start postgres (builds an image from Dockerfile.postgres)
+docker build -f Dockerfile.postgres -t creditninja-db .
+docker run --name creditdb -p 5432:5432 -d creditninja-db
 go mod tidy
 go run ./cmd
 ```
