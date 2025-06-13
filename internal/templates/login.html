@@ -1,0 +1,37 @@
+{{define "login"}}
+{{template "base" .}}
+{{block "content" .}}
+
+<form class="max-w-sm mx-auto bg-white shadow p-6 rounded"
+      method="post"
+      action="{{if .Register}}/register{{else}}/login{{end}}">
+  <h1 class="text-xl mb-4 font-semibold">
+    {{if .Register}}Create Account{{else}}Login{{end}}
+  </h1>
+
+  {{if .Error}}
+  <div class="text-red-600 mb-2">{{.Error}}</div>
+  {{end}}
+
+  <label class="block mb-1 text-sm">Email</label>
+  <input type="email" name="email"
+         class="border p-2 w-full mb-2 rounded" required>
+
+  <label class="block mb-1 text-sm">Password</label>
+  <input type="password" name="password"
+         class="border p-2 w-full mb-4 rounded" required>
+
+  <button class="bg-purple-700 text-white p-2 w-full rounded">
+    {{if .Register}}Register{{else}}Login{{end}}
+  </button>
+
+  {{if not .Register}}
+  <p class="mt-3 text-center text-sm">
+    No account?
+    <a href="/register" class="text-purple-700 underline">Create one</a>
+  </p>
+  {{end}}
+</form>
+
+{{end}}
+{{end}}
