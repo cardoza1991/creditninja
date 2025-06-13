@@ -1,4 +1,4 @@
-# creditninja# CreditNinja
+# CreditNinja
 
 Lean & mean Golang credit‑repair automation platform.
 
@@ -16,7 +16,7 @@ go run ./cmd
 ```
 
 The app can integrate with a local AI service for PDF parsing and dispute letter generation.
-Set `LOCAL_AI_URL` and `PARSER_URL` in your `.env` to the endpoints of your microservices.
+Set `LOCAL_AI_URL`, `PARSER_URL`, and `APP_URL` in your `.env` to the endpoints of your microservices and the public app URL used in verification emails.
 
 ## Stack
 
