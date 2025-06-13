@@ -12,6 +12,9 @@ go mod tidy
 go run ./cmd
 ```
 
+The app can integrate with a local AI service for PDF parsing and dispute letter generation.
+Set `LOCAL_AI_URL` and `PARSER_URL` in your `.env` to the endpoints of your microservices.
+
 ## Stack
 
 * **Fiber** – blazing fast web framework

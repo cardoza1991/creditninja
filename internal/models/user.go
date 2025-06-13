@@ -13,6 +13,7 @@ type User struct {
 	Email     string    `db:"email"`
 	Password  string    `db:"password"`
 	Role      string    `db:"role"`
+	Verified  bool      `db:"verified"`
 	CreatedAt time.Time `db:"created_at"`
 }
 
@@ -34,13 +35,14 @@ func CreateUser(db *sqlx.DB, email, password, role string) (*User, error) {
 		ID:        uuid.New(),
 		Email:     email,
 		Role:      role,
+		Verified:  false,
 		CreatedAt: time.Now(),
 	}
 	if err := user.SetPassword(password); err != nil {
 		return nil, err
 	}
-	_, err := db.NamedExec(`INSERT INTO users (id, email, password, role, created_at)
-                             VALUES (:id, :email, :password, :role, :created_at)`, user)
+	_, err := db.NamedExec(`INSERT INTO users (id, email, password, role, verified, created_at)
+                             VALUES (:id, :email, :password, :role, :verified, :created_at)`, user)
 	return user, err
 }
 

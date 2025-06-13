@@ -28,5 +28,25 @@
     {{end}}
   </tbody>
 </table>
+
+<h2 class="text-xl font-medium mt-8 mb-2">Your Letters</h2>
+<table class="border w-full bg-white shadow rounded">
+  <thead>
+    <tr class="bg-gray-200">
+      <th class="p-2 border">Round</th>
+      <th class="p-2 border">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{range .Letters}}
+    <tr>
+      <td class="p-2 border">{{.Round}}</td>
+      <td class="p-2 border">{{.Status}}</td>
+    </tr>
+    {{else}}
+    <tr><td colspan="2" class="p-4 text-center">No letters yet</td></tr>
+    {{end}}
+  </tbody>
+</table>
 {{end}}
 {{end}}
