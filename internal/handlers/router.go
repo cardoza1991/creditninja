@@ -22,8 +22,10 @@ func RegisterRoutes(app *fiber.App) {
 	app.Get("/verify/:token", VerifyEmail)
 
 	app.Get("/dashboard", dashboard)
+	app.Get("/billing", billing)
 
 	app.Post("/upload", upload)
+	app.Post("/letters", createLetter)
 
 	app.Get("/pay", pay)
 }

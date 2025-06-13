@@ -10,7 +10,10 @@
 <body class="bg-gray-100 min-h-screen">
   <nav class="bg-purple-700 text-white p-4">
     <a href="/" class="font-bold">CreditNinja</a>
-    {{if .User}}<a href="/logout" class="float-right underline">Logout</a>{{end}}
+    {{if .User}}
+    <a href="/billing" class="underline mx-4">Billing</a>
+    <a href="/logout" class="float-right underline">Logout</a>
+    {{end}}
   </nav>
 
   <main class="p-4 max-w-3xl mx-auto">

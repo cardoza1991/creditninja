@@ -23,6 +23,18 @@ func upload(c *fiber.Ctx) error {
 	}
 	userID, _ := uuid.Parse(uidRaw.(string))
 
+	db := c.Locals("db").(*sqlx.DB)
+	user, err := models.GetUserByID(db, userID)
+	if err != nil {
+		return c.Redirect("/login")
+	}
+	if !user.Verified {
+		return c.Redirect("/check-email?email=" + user.Email)
+	}
+	if !user.Paid {
+		return c.Status(fiber.StatusPaymentRequired).SendString("Upgrade required")
+	}
+
 	fileHeader, err := c.FormFile("report")
 	if err != nil {
 		return c.Status(400).SendString("File required")
@@ -42,7 +54,6 @@ func upload(c *fiber.Ctx) error {
 	}
 	parsed, _ := json.Marshal(parsedReport)
 
-	db := c.Locals("db").(*sqlx.DB)
 	_, err = models.CreateReport(db, userID, rawPath, string(parsed))
 	if err != nil {
 		return c.Status(500).SendString("DB error")

@@ -14,6 +14,7 @@ type User struct {
 	Password  string    `db:"password"`
 	Role      string    `db:"role"`
 	Verified  bool      `db:"verified"`
+	Paid      bool      `db:"paid"`
 	CreatedAt time.Time `db:"created_at"`
 }
 
@@ -36,18 +37,25 @@ func CreateUser(db *sqlx.DB, email, password, role string) (*User, error) {
 		Email:     email,
 		Role:      role,
 		Verified:  false,
+		Paid:      false,
 		CreatedAt: time.Now(),
 	}
 	if err := user.SetPassword(password); err != nil {
 		return nil, err
 	}
-	_, err := db.NamedExec(`INSERT INTO users (id, email, password, role, verified, created_at)
-                             VALUES (:id, :email, :password, :role, :verified, :created_at)`, user)
+	_, err := db.NamedExec(`INSERT INTO users (id, email, password, role, verified, paid, created_at)
+                             VALUES (:id, :email, :password, :role, :verified, :paid, :created_at)`, user)
 	return user, err
 }
 
 func GetUserByEmail(db *sqlx.DB, email string) (*User, error) {
 	var u User
 	err := db.Get(&u, "SELECT * FROM users WHERE email=$1", email)
+	return &u, err
+}
+
+func GetUserByID(db *sqlx.DB, id uuid.UUID) (*User, error) {
+	var u User
+	err := db.Get(&u, "SELECT * FROM users WHERE id=$1", id)
 	return &u, err
 }

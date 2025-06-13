@@ -11,9 +11,11 @@ func Migrate(db *sqlx.DB) error {
             password TEXT NOT NULL,
             role TEXT NOT NULL,
             verified BOOLEAN NOT NULL DEFAULT FALSE,
+            paid BOOLEAN NOT NULL DEFAULT FALSE,
             created_at TIMESTAMP NOT NULL
         );`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS verified BOOLEAN NOT NULL DEFAULT FALSE;`,
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS paid BOOLEAN NOT NULL DEFAULT FALSE;`,
 		`CREATE TABLE IF NOT EXISTS credit_reports (
             id UUID PRIMARY KEY,
             user_id UUID REFERENCES users(id) ON DELETE CASCADE,

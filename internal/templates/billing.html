@@ -1,0 +1,10 @@
+{{define "billing"}}
+{{template "base" .}}
+{{block "content" .}}
+<h1 class="text-xl mb-4">Billing</h1>
+<p>Your current plan: {{if .User.Paid}}Paid{{else}}Free{{end}}</p>
+{{if not .User.Paid}}
+<a href="/pay" class="inline-block mt-4 bg-purple-600 text-white p-2 rounded">Upgrade</a>
+{{end}}
+{{end}}
+{{end}}
