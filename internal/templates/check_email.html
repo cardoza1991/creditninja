@@ -1,0 +1,11 @@
+{{define "check_email"}}
+{{template "base" .}}
+{{block "content" .}}
+<h1 class="text-xl mb-4">Check your email</h1>
+<p>We've sent a verification link to {{.Email}}. Please click the link to verify your account.</p>
+<form action="/resend-verification" method="post" class="mt-4">
+  <input type="hidden" name="email" value="{{.Email}}">
+  <button class="bg-purple-600 text-white p-2 rounded">Resend verification email</button>
+</form>
+{{end}}
+{{end}}

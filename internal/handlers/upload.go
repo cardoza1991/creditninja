@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/session"
@@ -12,6 +11,7 @@ import (
 	"github.com/jmoiron/sqlx"
 
 	"creditninja/internal/models"
+	"creditninja/internal/services"
 )
 
 func upload(c *fiber.Ctx) error {
@@ -22,6 +22,18 @@ func upload(c *fiber.Ctx) error {
 		return c.Redirect("/login")
 	}
 	userID, _ := uuid.Parse(uidRaw.(string))
+
+	db := c.Locals("db").(*sqlx.DB)
+	user, err := models.GetUserByID(db, userID)
+	if err != nil {
+		return c.Redirect("/login")
+	}
+	if !user.Verified {
+		return c.Redirect("/check-email?email=" + user.Email)
+	}
+	if !user.Paid {
+		return c.Status(fiber.StatusPaymentRequired).SendString("Upgrade required")
+	}
 
 	fileHeader, err := c.FormFile("report")
 	if err != nil {
@@ -36,13 +48,12 @@ func upload(c *fiber.Ctx) error {
 		return c.Status(500).SendString("Upload failed")
 	}
 
-	// Parse stub
-	parsed, _ := json.Marshal(map[string]string{
-		"status":   "placeholder",
-		"uploaded": time.Now().String(),
-	})
+	parsedReport, err := services.ParseReport(rawPath)
+	if err != nil {
+		c.Context().Logger().Printf("parse error: %v", err)
+	}
+	parsed, _ := json.Marshal(parsedReport)
 
-	db := c.Locals("db").(*sqlx.DB)
 	_, err = models.CreateReport(db, userID, rawPath, string(parsed))
 	if err != nil {
 		return c.Status(500).SendString("DB error")

@@ -22,7 +22,11 @@ func dashboard(c *fiber.Ctx) error {
 	var reports []models.CreditReport
 	db.Select(&reports, "SELECT * FROM credit_reports WHERE user_id=$1 ORDER BY created_at DESC", userID)
 
+	var letters []models.DisputeLetter
+	db.Select(&letters, "SELECT * FROM dispute_letters WHERE user_id=$1 ORDER BY created_at DESC", userID)
+
 	return c.Render("dashboard", fiber.Map{
 		"Reports": reports,
+		"Letters": letters,
 	})
 }

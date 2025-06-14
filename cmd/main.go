@@ -28,6 +28,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("DB connection failed: %v", err)
 	}
+	if err := models.Migrate(db); err != nil {
+		log.Fatalf("DB migration failed: %v", err)
+	}
 	defer db.Close()
 
 	// Fiber with Go html/template engine

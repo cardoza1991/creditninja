@@ -1,0 +1,5 @@
+FROM postgres:16
+ENV POSTGRES_USER=credit
+ENV POSTGRES_PASSWORD=creditpw
+ENV POSTGRES_DB=creditninja
+EXPOSE 5432
